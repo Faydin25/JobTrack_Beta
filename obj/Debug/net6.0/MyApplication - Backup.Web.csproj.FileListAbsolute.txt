@@ -1,0 +1,9 @@
+/home/binam/jobtrack/obj/Debug/net6.0/MyApplication - Backup.Web.csproj.AssemblyReference.cache
+/home/binam/jobtrack/obj/Debug/net6.0/MyApplication - Backup.Web.GeneratedMSBuildEditorConfig.editorconfig
+/home/binam/jobtrack/obj/Debug/net6.0/MyApplication - Backup.Web.AssemblyInfoInputs.cache
+/home/binam/jobtrack/obj/Debug/net6.0/MyApplication - Backup.Web.AssemblyInfo.cs
+/home/binam/jobtrack/obj/Debug/net6.0/MyApplication - Backup.Web.csproj.CoreCompileInputs.cache
+/home/binam/jobtrack/obj/Debug/net6.0/MyApplication - Backup.Web.MvcApplicationPartsAssemblyInfo.cs
+/home/binam/jobtrack/obj/Debug/net6.0/MyApplication - Backup.Web.MvcApplicationPartsAssemblyInfo.cache
+/home/binam/jobtrack/obj/Debug/net6.0/MyApplication - Backup.Web.RazorAssemblyInfo.cache
+/home/binam/jobtrack/obj/Debug/net6.0/MyApplication - Backup.Web.RazorAssemblyInfo.cs

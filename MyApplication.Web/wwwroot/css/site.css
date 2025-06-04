@@ -1,0 +1,89 @@
+﻿body {
+    background: #f0f2f5;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.login-container,
+.profile-container {
+    background: #fff;
+    max-width: 450px;
+    margin: 60px auto;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+    .login-container h2,
+    .profile-container h2 {
+        margin-bottom: 25px;
+        font-weight: bold;
+        color: #333;
+    }
+
+.form-group {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.form-control {
+    border-radius: 10px;
+}
+
+.btn-primary {
+    background-color: #4a69bd;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+    .btn-primary:hover {
+        background-color: #1e3799;
+    }
+
+.register-link {
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.error-message {
+    margin-top: 15px;
+    color: #dc3545;
+}
+
+.profile-image {
+    max-width: 120px;
+    border-radius: 50%;
+    margin-bottom: 15px;
+}
+
+.profile-details {
+    text-align: left;
+    margin-top: 20px;
+}
+
+.profile-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.table {
+    background-color: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+}
+
+    .table thead {
+        background-color: #f8f9fa;
+    }
+
+.list-container {
+    margin: 40px auto;
+    max-width: 90%;
+}

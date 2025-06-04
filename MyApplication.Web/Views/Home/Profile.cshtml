@@ -1,0 +1,43 @@
+﻿@model User
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Profil Bilgileri</h2>
+
+    @if (Model != null)
+    {
+        <div class="card mx-auto shadow p-4" style="max-width: 500px;">
+            @if (Model.PhotoPath != null)
+            {
+                <div class="text-center mb-3">
+                    <img src="/images/@Model.PhotoPath" class="rounded-circle" style="width: 120px; height: 120px; object-fit: cover;" />
+                </div>
+            }
+
+            <div class="card-body">
+                <p class="card-text"><strong>Kullanıcı Adı:</strong> @Model.UserName</p>
+                <p class="card-text"><strong>Email:</strong> @Model.Email</p>
+                @if (Model.DateOfBirth != null)
+                {
+                    <p class="card-text"><strong>Doğum Tarihi:</strong> @Model.DateOfBirth?.ToString("dd.MM.yyyy")</p>
+                }
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-warning text-center" role="alert">
+            Kullanıcı bilgileri yüklenemedi.
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger text-center mt-3">
+            @TempData["Error"]
+        </div>
+    }
+</div>
