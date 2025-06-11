@@ -31,6 +31,7 @@ namespace MyApplication.Web.Controllers
 
         }
         [AllowAnonymous]
+        [HttpGet]
         public IActionResult Register()
         {
             return View();
@@ -165,7 +166,7 @@ namespace MyApplication.Web.Controllers
             return View("Index", model);
         }
 
-        [HttpPost]
+        /*[HttpPost]
         public IActionResult ToggleTheme()
         {
             var currentTheme = Request.Cookies["theme"];
@@ -180,7 +181,7 @@ namespace MyApplication.Web.Controllers
                 return Redirect(referer);
 
             return RedirectToAction("Index", "Home");
-        }
+        }*/
 
         [HttpPost]
         [ValidateAntiForgeryToken]
