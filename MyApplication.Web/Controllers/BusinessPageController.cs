@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using MyApplication.Web.Data;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 using ModelsTask = MyApplication.Web.Models.Task;
 using ModelsTaskStatus = MyApplication.Web.Models.TaskStatus;
@@ -76,15 +78,31 @@ namespace MyApplication.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateTask(string title, string description, ModelsTaskStatus status, int userId)
+        public IActionResult CreateTask(string title, string description, ModelsTaskStatus status, int userId, DateTime deadline, IFormFile? attachment)
         {
+            string? attachmentPath = null;
+            if (attachment != null && attachment.Length > 0)
+            {
+                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
+                if (!Directory.Exists(uploadsFolder))
+                    Directory.CreateDirectory(uploadsFolder);
+                var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(attachment.FileName);
+                var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    attachment.CopyTo(stream);
+                }
+                attachmentPath = "/uploads/" + uniqueFileName;
+            }
             var newTask = new ModelsTask
             {
                 Title = title,
                 Description = description,
                 Status = status,
                 CreatedDate = DateTime.Now,
-                UserId = userId
+                UserId = userId,
+                Deadline = deadline,
+                AttachmentPath = attachmentPath
             };
             _context.Tasks.Add(newTask);
             _context.SaveChanges();

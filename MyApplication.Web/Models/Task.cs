@@ -21,6 +21,11 @@ namespace MyApplication.Web.Models
 
         [DataType(DataType.Date)]
         public DateTime CreatedDate { get; set; }  // Oluşturulma tarihi
+
+        [DataType(DataType.Date)]
+        public DateTime Deadline { get; set; }  // Son teslim tarihi
+
+        public string? AttachmentPath { get; set; }  // Ek dosya yolu
     }
 
     public enum TaskStatus

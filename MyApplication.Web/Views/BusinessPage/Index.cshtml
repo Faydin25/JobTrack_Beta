@@ -25,7 +25,7 @@
     <div class="modal fade" id="taskModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form method="post" asp-action="CreateTask" asp-controller="BusinessPage">
+                <form method="post" asp-action="CreateTask" asp-controller="BusinessPage" enctype="multipart/form-data">
                     <div class="modal-header">
                         <h5 class="modal-title">Yeni Görev Ekle</h5>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -45,6 +45,8 @@
                                 <option value="@user.Id">@user.UserName</option>
                             }
                         </select>
+                        <input type="date" name="deadline" class="form-control mb-2" required />
+                        <input type="file" name="attachment" class="form-control mb-2" accept=".pdf,.doc,.docx,image/*" />
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-success">Ekle</button>
@@ -73,6 +75,11 @@
                             </form>
 
                             <p class="mt-2"><small>Oluşturulma: @task.CreatedDate.ToString("dd.MM.yyyy")</small></p>
+                            <p class="mt-2"><small>Son Teslim: @task.Deadline.ToString("dd.MM.yyyy")</small></p>
+                            @if (!string.IsNullOrEmpty(task.AttachmentPath))
+                            {
+                                <p class="mt-2"><a href="@task.AttachmentPath" target="_blank">Ek Dosyayı Görüntüle/İndir</a></p>
+                            }
 
                             <!-- Statü değiştirme butonları -->
                             <form method="post" asp-action="UpdateStatus" asp-controller="BusinessPage" class="mb-2">
