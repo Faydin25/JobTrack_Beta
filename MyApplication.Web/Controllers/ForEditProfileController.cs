@@ -105,5 +105,19 @@ namespace MyApplication.Web.Controllers
             return View("Index");
         }
 
+        [HttpPost]
+        public async Task<IActionResult> DeleteAccount()
+        {
+            var userName = HttpContext.Session.GetString("UserName");
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == userName);
+            if (user != null)
+            {
+                _context.Users.Remove(user);
+                await _context.SaveChangesAsync();
+                HttpContext.Session.Clear();
+                return RedirectToAction("Index", "Home");
+            }
+            return RedirectToAction("Index");
+        }
     }
 }

@@ -15,6 +15,8 @@ namespace MyApplication.Web.Controllers
     public class BusinessPageController : Controller
     {
         private readonly AppDbContext _context;
+        private const string BusinessPagePassword = "2525"; // Change as needed
+        private const string BusinessPageSessionKey = "BusinessPageAuthenticated";
 
         public BusinessPageController(AppDbContext context)
         {
@@ -23,6 +25,11 @@ namespace MyApplication.Web.Controllers
 
         public IActionResult Index(int? userId)
         {
+            if (HttpContext.Session.GetString(BusinessPageSessionKey) != "true")
+            {
+                return RedirectToAction("Password");
+            }
+
             var users = _context.Users.ToList();
             IEnumerable<ModelsTask> tasks = Enumerable.Empty<ModelsTask>();
             if (userId.HasValue)
@@ -40,6 +47,24 @@ namespace MyApplication.Web.Controllers
             };
 
             return View(viewModel);
+        }
+
+        [HttpGet]
+        public IActionResult Password()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Password(string password)
+        {
+            if (password == BusinessPagePassword)
+            {
+                HttpContext.Session.SetString(BusinessPageSessionKey, "true");
+                return RedirectToAction("Index");
+            }
+            ViewBag.Error = "Şifre yanlış.";
+            return View();
         }
 
         [HttpPost]
