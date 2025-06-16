@@ -21,14 +21,23 @@ namespace MyApplication.Web.Controllers
         {
             return View();
         }
-        public IActionResult TaskList()
+        public IActionResult TaskList(int? userId, int? status)
         {
+            var tasksQuery = _context.Tasks.Include(t => t.User).AsQueryable();
+            if (userId.HasValue)
+            {
+                tasksQuery = tasksQuery.Where(t => t.UserId == userId.Value);
+            }
+            if (status.HasValue)
+            {
+                tasksQuery = tasksQuery.Where(t => (int)t.Status == status.Value);
+            }
             var viewModel = new BusinessPageViewModel
             {
-                Tasks = _context.Tasks.Include(t => t.User).ToList()
+                Tasks = tasksQuery.ToList(),
+                Users = _context.Users.ToList()
             };
             return View(viewModel);
-
         }
         [AllowAnonymous]
         [HttpGet]

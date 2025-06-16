@@ -19,7 +19,7 @@
             <tr class="@GetStatusClass(task.Status)">
                 <td>@task.Title</td>
                 <td>@task.Description</td>
-                <td>@Enum.GetName(typeof(TaskStatus), task.Status)</td>
+                <td>@(task.Status == TaskStatus.ToDo ? "Yapılacak" : task.Status == TaskStatus.InProgress ? "Yapılıyor" : task.Status == TaskStatus.Done ? "Tamamlandı" : task.Status.ToString())</td>
                 <td>@(task.User?.UserName ?? "Kullanıcı Yok")</td>
                 <td>@task.CreatedDate.ToString("yyyy-MM-dd")</td>
             </tr>

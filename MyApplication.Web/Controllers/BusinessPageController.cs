@@ -15,7 +15,7 @@ namespace MyApplication.Web.Controllers
     public class BusinessPageController : Controller
     {
         private readonly AppDbContext _context;
-        private const string BusinessPagePassword = "2525"; // Change as needed
+        private const string BusinessPagePassword = "2525";
         private const string BusinessPageSessionKey = "BusinessPageAuthenticated";
 
         public BusinessPageController(AppDbContext context)

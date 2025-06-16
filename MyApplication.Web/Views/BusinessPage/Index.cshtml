@@ -36,7 +36,9 @@
                         <select name="status" class="form-control mb-2">
                             @foreach (var status in Enum.GetValues(typeof(TaskStatus)))
                             {
-                                <option value="@status">@status</option>
+                                <option value="@status">
+                                    @(status.ToString() == "ToDo" ? "Yapılacak" : status.ToString() == "InProgress" ? "Yapılıyor" : status.ToString() == "Done" ? "Tamamlandı" : status.ToString())
+                                </option>
                             }
                         </select>
                         <select name="userId" class="form-control" required>
@@ -62,7 +64,9 @@
         @foreach (var status in Enum.GetValues(typeof(TaskStatus)))
         {
             <div class="col-md-4">
-                <h4 class="text-center">@status</h4>
+                <h4 class="text-center">
+                    @(status.ToString() == "ToDo" ? "Yapılacak" : status.ToString() == "InProgress" ? "Yapılıyor" : status.ToString() == "Done" ? "Tamamlandı" : status.ToString())
+                </h4>
                 @foreach (var task in Model.Tasks.Where(t => t.Status == (TaskStatus)status))
                 {
                     <div class="card mb-3">
@@ -88,7 +92,9 @@
                                 {
                                     if (newStatus != task.Status)
                                     {
-                                        <button name="status" value="@newStatus" class="btn btn-outline-secondary btn-sm mx-1">@newStatus</button>
+                                        <button name="status" value="@newStatus" class="btn btn-outline-secondary btn-sm mx-1">
+                                            @(newStatus.ToString() == "ToDo" ? "Yapılacak" : newStatus.ToString() == "InProgress" ? "Yapılıyor" : newStatus.ToString() == "Done" ? "Tamamlandı" : newStatus.ToString())
+                                        </button>
                                     }
                                 }
                             </form>
