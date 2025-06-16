@@ -37,6 +37,7 @@
             <th>Durum</th>
             <th>Kullanıcı</th>
             <th>Oluşturulma Tarihi</th>
+            <th>İşlem</th>
         </tr>
     </thead>
     <tbody>
@@ -48,6 +49,26 @@
                 <td>@(task.Status == TaskStatus.ToDo ? "Yapılacak" : task.Status == TaskStatus.InProgress ? "Yapılıyor" : task.Status == TaskStatus.Done ? "Tamamlandı" : task.Status.ToString())</td>
                 <td>@(task.User?.UserName ?? "Kullanıcı Yok")</td>
                 <td>@task.CreatedDate.ToString("yyyy-MM-dd")</td>
+                <td>
+                    @if (task.Status == TaskStatus.ToDo && task.UserId == currentUserId)
+                    {
+                        <form method="post" asp-action="UpdateStatus" asp-controller="Home" style="display:inline;">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="taskId" value="@task.TaskId" />
+                            <input type="hidden" name="newStatus" value="InProgress" />
+                            <button type="submit" class="btn btn-primary btn-sm">Başlat</button>
+                        </form>
+                    }
+                    @if (task.Status == TaskStatus.InProgress && task.UserId == currentUserId)
+                    {
+                        <form method="post" asp-action="UpdateStatus" asp-controller="Home" style="display:inline;">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="taskId" value="@task.TaskId" />
+                            <input type="hidden" name="newStatus" value="Done" />
+                            <button type="submit" class="btn btn-primary btn-sm">Tamamla</button>
+                        </form>
+                    }
+                </td>
             </tr>
         }
     </tbody>
@@ -68,6 +89,14 @@
                 return "table-success";  // Bootstrap sınıfı ile yeşil
             default:
                 return "";
+        }
+    }
+
+    int currentUserId
+    {
+        get
+        {
+            return int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier).Value);
         }
     }
 }

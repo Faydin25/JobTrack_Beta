@@ -8,13 +8,25 @@
     <form method="get" asp-action="Index" asp-controller="BusinessPage">
         <label for="userId">Kullanıcı Seçin:</label>
         <select id="userId" name="userId" class="form-control" onchange="this.form.submit()">
-            <option value="">Lütfen kullanıcı seçin</option>
+            <option value="">Tümü</option>
             @foreach (var user in Model.Users)
             {
-                <option value="@user.Id">@user.UserName</option>
+                var selected = (ViewContext.HttpContext.Request.Query["userId"] == user.Id.ToString()) ? "selected" : "";
+                @Html.Raw($"<option value=\"{user.Id}\" {selected}>{user.UserName}</option>")
             }
         </select>
     </form>
+
+    @if (!string.IsNullOrEmpty(ViewContext.HttpContext.Request.Query["userId"]))
+    {
+        var selectedUser = Model.Users.FirstOrDefault(u => u.Id.ToString() == ViewContext.HttpContext.Request.Query["userId"]);
+        if (selectedUser != null)
+        {
+            <div class="alert alert-info mt-2 mb-2">
+                Seçili Kullanıcı: <b>@selectedUser.UserName</b>
+            </div>
+        }
+    }
 
     <br />
 

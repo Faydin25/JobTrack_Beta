@@ -10,6 +10,7 @@ using System.Security.Claims;
 using MyApplication.Web.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using TaskStatusEnum = MyApplication.Web.Models.TaskStatus;
 
 namespace MyApplication.Web.Controllers
 {
@@ -215,6 +216,20 @@ namespace MyApplication.Web.Controllers
             
             // Redirect to login page
             return RedirectToAction("Index", "Home", null, "https");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult UpdateStatus(int taskId, TaskStatusEnum newStatus)
+        {
+            var userId = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier).Value);
+            var task = _context.Tasks.FirstOrDefault(t => t.TaskId == taskId && t.UserId == userId);
+            if (task != null)
+            {
+                task.Status = newStatus;
+                _context.SaveChanges();
+            }
+            return RedirectToAction("TaskList");
         }
 
     }
