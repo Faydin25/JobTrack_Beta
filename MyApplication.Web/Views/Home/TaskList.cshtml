@@ -3,6 +3,32 @@
 
 <div class="list-container">
 
+<!-- Filtre Çubuğu -->
+<form method="get" asp-action="TaskList" asp-controller="Home" class="form-inline mb-3">
+    <label for="userId" class="mr-2">Kullanıcı:</label>
+    <select id="userId" name="userId" class="form-control mr-3" onchange="this.form.submit()">
+        <option value="">Tümü</option>
+        @if (Model.Users != null)
+        {
+            foreach (var user in Model.Users)
+            {
+                var selected = ViewContext.HttpContext.Request.Query["userId"] == user.Id.ToString() ? "selected" : "";
+                @Html.Raw($"<option value=\"{user.Id}\" {selected}>{user.UserName}</option>")
+            }
+        }
+    </select>
+    <label for="status" class="mr-2">Durum:</label>
+    <select id="status" name="status" class="form-control mr-3" onchange="this.form.submit()">
+        <option value="">Tümü</option>
+        @foreach (TaskStatus status in Enum.GetValues(typeof(TaskStatus)))
+        {
+            var statusText = status == TaskStatus.ToDo ? "Yapılacak" : status == TaskStatus.InProgress ? "Yapılıyor" : status == TaskStatus.Done ? "Tamamlandı" : status.ToString();
+            var selected = ViewContext.HttpContext.Request.Query["status"] == ((int)status).ToString() ? "selected" : "";
+            @Html.Raw($"<option value=\"{(int)status}\" {selected}>{statusText}</option>")
+        }
+    </select>
+</form>
+
 <table class="table">
     <thead>
         <tr>
