@@ -5,6 +5,7 @@
     var userLogs = Newtonsoft.Json.JsonConvert.DeserializeObject<List<DateTime>>(ViewData["UserLogs"] as string);
     var usersWithPhoto = ViewData["UsersWithPhoto"] as int?;
     var usersWithoutPhoto = ViewData["UsersWithoutPhoto"] as int?;
+    var overdueTasksCount = ViewData["OverdueTasksCount"] as int?;
 }
 
 <!DOCTYPE html>
@@ -78,6 +79,15 @@
                     <div class="card-header">Fotosuz Kullanıcı</div>
                     <div class="card-body">
                         <h5 class="card-title">@usersWithoutPhoto</h5>
+                    </div>
+                </div>
+            </div>
+            <!-- Yeni Kart: Gecikmiş Görevler -->
+            <div class="col-md-4 mt-3">
+                <div class="card text-bg-warning mb-3">
+                    <div class="card-header">Gecikmiş Görevler</div>
+                    <div class="card-body">
+                        <h5 class="card-title">@(overdueTasksCount ?? 0)</h5>
                     </div>
                 </div>
             </div>

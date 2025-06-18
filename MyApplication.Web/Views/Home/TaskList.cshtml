@@ -37,18 +37,31 @@
             <th>Durum</th>
             <th>Kullanıcı</th>
             <th>Oluşturulma Tarihi</th>
+            <th>Ek Dosya</th>
             <th>İşlem</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var task in Model.Tasks)
         {
-            <tr class="@GetStatusClass(task.Status)">
+            var isOverdue = task.Deadline < DateTime.Now && task.Status != TaskStatus.Done;
+            var rowClass = GetStatusClass(task.Status) + (isOverdue ? " overdue-task" : "");
+            <tr class="@rowClass">
                 <td>@task.Title</td>
                 <td>@task.Description</td>
                 <td>@(task.Status == TaskStatus.ToDo ? "Yapılacak" : task.Status == TaskStatus.InProgress ? "Yapılıyor" : task.Status == TaskStatus.Done ? "Tamamlandı" : task.Status.ToString())</td>
                 <td>@(task.User?.UserName ?? "Kullanıcı Yok")</td>
                 <td>@task.CreatedDate.ToString("yyyy-MM-dd")</td>
+                <td>
+                    @if (!string.IsNullOrEmpty(task.AttachmentPath))
+                    {
+                        <a href="@task.AttachmentPath" target="_blank">Görüntüle/İndir</a>
+                    }
+                    else
+                    {
+                        <span>-</span>
+                    }
+                </td>
                 <td>
                     @if (task.Status == TaskStatus.ToDo && task.UserId == currentUserId)
                     {
@@ -75,6 +88,12 @@
 </table>
 
 </div>
+
+<style>
+    .overdue-task {
+        background-color: #ffcccc !important;
+    }
+</style>
 
 @functions {
     string GetStatusClass(TaskStatus status)

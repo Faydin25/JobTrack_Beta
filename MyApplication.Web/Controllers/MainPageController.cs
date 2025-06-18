@@ -33,6 +33,9 @@ namespace MyApplication.Web.Controllers
                 var userCount = users.Count;
                 var tasksAndCount = GetCountTasks(users);
 
+                // Gecikmiş taskleri hesapla
+                var overdueTasksCount = _context.Tasks.Count(t => t.Deadline < DateTime.Now && t.Status != MyApplication.Web.Models.TaskStatus.Done);
+
                 var usersWithPhoto = users.Count(u => !string.IsNullOrEmpty(u.PhotoPath));
                 var usersWithoutPhoto = users.Count(u => string.IsNullOrEmpty(u.PhotoPath));
 
@@ -42,6 +45,7 @@ namespace MyApplication.Web.Controllers
                 ViewData["UserCount"] = userCount;
                 ViewData["TasksAndCount"] = tasksAndCount;
                 ViewData["UserLogs"] = currentUser.LogTimesJson ?? "[]";
+                ViewData["OverdueTasksCount"] = overdueTasksCount;
 
                 return View();
             }
