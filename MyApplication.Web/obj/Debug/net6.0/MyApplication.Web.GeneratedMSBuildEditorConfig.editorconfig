@@ -15,6 +15,14 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = /home/binam/jobtrack/MyApplication.Web
 build_property._RazorSourceGeneratorDebug = 
 
+[/home/binam/jobtrack/MyApplication.Web/Views/Admin/EditUser.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vRWRpdFVzZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/binam/jobtrack/MyApplication.Web/Views/Admin/Users.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vVXNlcnMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [/home/binam/jobtrack/MyApplication.Web/Views/BusinessPage/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQnVzaW5lc3NQYWdlL0luZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 

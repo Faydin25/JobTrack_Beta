@@ -14,5 +14,6 @@ namespace MyApplication.Web.Models
 
         public virtual ICollection<Task> Tasks { get; set; } = new List<Task>();
         public string LogTimesJson { get; set; } = "[]";
+        public bool IsSuperUser { get; set; } = false;
     }
 }

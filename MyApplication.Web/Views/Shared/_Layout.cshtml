@@ -27,6 +27,14 @@
                     <li class="nav-item"><a class="nav-link" href="/BusinessPage/Index">İş Modeli</a></li>
                     <li class="nav-item"><a class="nav-link" href="/Home/TaskList">İş Listesi</a></li>
                     <li class="nav-item"><a class="nav-link" href="/ForEditProfile/Index">Profili Düzenle</a></li>
+                    @{
+                        var db = Context.RequestServices.GetService(typeof(MyApplication.Web.Data.AppDbContext)) as MyApplication.Web.Data.AppDbContext;
+                        var currentUser = db?.Users.FirstOrDefault(u => u.UserName == userName);
+                    }
+                    @if (currentUser != null && currentUser.IsSuperUser)
+                    {
+                        <li class="nav-item"><a class="nav-link" href="/Admin/Users">Kullanıcı Yönetimi</a></li>
+                    }
                     <li class="nav-item">
                         <form asp-controller="Home" asp-action="Logout" method="post" class="d-inline">
                         @Html.AntiForgeryToken()

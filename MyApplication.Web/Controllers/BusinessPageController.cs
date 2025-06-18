@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 using ModelsTask = MyApplication.Web.Models.Task;
 using ModelsTaskStatus = MyApplication.Web.Models.TaskStatus;
@@ -23,13 +24,25 @@ namespace MyApplication.Web.Controllers
             _context = context;
         }
 
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            var userName = context.HttpContext.User.Identity?.Name;
+            if (string.IsNullOrEmpty(userName))
+            {
+                context.Result = new RedirectToActionResult("Index", "Home", null);
+                return;
+            }
+            var user = _context.Users.FirstOrDefault(u => u.UserName == userName);
+            if (user == null || !user.IsSuperUser)
+            {
+                context.Result = new RedirectToActionResult("Index", "Home", null);
+                return;
+            }
+            base.OnActionExecuting(context);
+        }
+
         public IActionResult Index(int? userId)
         {
-            if (HttpContext.Session.GetString(BusinessPageSessionKey) != "true")
-            {
-                return RedirectToAction("Password");
-            }
-
             var users = _context.Users.ToList();
             IEnumerable<ModelsTask> tasks = Enumerable.Empty<ModelsTask>();
             if (userId.HasValue)
@@ -47,24 +60,6 @@ namespace MyApplication.Web.Controllers
             };
 
             return View(viewModel);
-        }
-
-        [HttpGet]
-        public IActionResult Password()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult Password(string password)
-        {
-            if (password == BusinessPagePassword)
-            {
-                HttpContext.Session.SetString(BusinessPageSessionKey, "true");
-                return RedirectToAction("Index");
-            }
-            ViewBag.Error = "Şifre yanlış.";
-            return View();
         }
 
         [HttpPost]
