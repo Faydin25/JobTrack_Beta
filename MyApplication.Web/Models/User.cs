@@ -11,6 +11,7 @@ namespace MyApplication.Web.Models
         public string? Email { get; set; }
         public string? PhotoPath { get; set; }
         public DateTime? DateOfBirth { get; set; }
+        public string? PhoneNumber { get; set; }
 
         public virtual ICollection<Task> Tasks { get; set; } = new List<Task>();
         public string LogTimesJson { get; set; } = "[]";

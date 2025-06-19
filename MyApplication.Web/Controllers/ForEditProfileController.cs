@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using System.Security.Claims;
+using PhoneNumbers;
 
 namespace MyApplication.Web.Controllers
 {
@@ -72,6 +73,26 @@ namespace MyApplication.Web.Controllers
                             user.DateOfBirth = model.DateOfBirth?.Date ?? DateTime.Today;
                         else
                             ModelState.AddModelError("", "İleri bir tarih eklenemez.");
+                    }
+                    if (model.PhoneNumber != null)
+                    {
+                        var phoneUtil = PhoneNumberUtil.GetInstance();
+                        try
+                        {
+                            var phoneNumber = phoneUtil.Parse(model.PhoneNumber, "TR");
+                            if (phoneUtil.IsValidNumberForRegion(phoneNumber, "TR"))
+                            {
+                                user.PhoneNumber = model.PhoneNumber;
+                            }
+                            else
+                            {
+                                ModelState.AddModelError("PhoneNumber", "Geçerli bir telefon numarası giriniz.");
+                            }
+                        }
+                        catch (NumberParseException)
+                        {
+                            ModelState.AddModelError("PhoneNumber", "Geçerli bir telefon numarası giriniz.");
+                        }
                     }
                     if (model.File != null)
                     {

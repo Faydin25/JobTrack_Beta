@@ -24,6 +24,10 @@
                 {
                     <p class="card-text"><strong>Doğum Tarihi:</strong> @Model.DateOfBirth?.ToString("dd.MM.yyyy")</p>
                 }
+                @if (!string.IsNullOrEmpty(Model.PhoneNumber))
+                {
+                    <p class="card-text"><strong>Telefon Numarası:</strong> @Model.PhoneNumber</p>
+                }
             </div>
         </div>
     }
