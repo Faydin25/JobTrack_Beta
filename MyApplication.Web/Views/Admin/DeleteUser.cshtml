@@ -1,0 +1,21 @@
+@model MyApplication.Web.Models.User
+@{
+    ViewData["Title"] = "Kullanıcıyı Sil";
+}
+<div class="container mt-5">
+    <h2 class="mb-4 text-danger">Kullanıcıyı Sil</h2>
+    <div class="alert alert-warning">Bu kullanıcıyı silmek istediğinizden emin misiniz?</div>
+    <dl class="row">
+        <dt class="col-sm-3">Kullanıcı Adı</dt>
+        <dd class="col-sm-9">@Model.UserName</dd>
+        <dt class="col-sm-3">Email</dt>
+        <dd class="col-sm-9">@Model.Email</dd>
+        <dt class="col-sm-3">Telefon Numarası</dt>
+        <dd class="col-sm-9">@Model.PhoneNumber</dd>
+    </dl>
+    <form asp-action="DeleteUser" method="post">
+        <input type="hidden" asp-for="Id" />
+        <button type="submit" class="btn btn-danger">Sil</button>
+        <a href="@Url.Action("Users", "Admin")" class="btn btn-secondary ms-2">Vazgeç</a>
+    </form>
+</div> 

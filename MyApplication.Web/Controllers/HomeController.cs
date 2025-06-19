@@ -62,7 +62,6 @@ namespace MyApplication.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(User model)
         {
-            // Kullanıcı adı veya e-posta sistemde var mı?
             bool userNameExists = await _context.Users.AnyAsync(u => u.UserName == model.UserName);
             bool emailExists = await _context.Users.AnyAsync(u => u.Email == model.Email);
 

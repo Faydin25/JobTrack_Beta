@@ -98,5 +98,75 @@ namespace MyApplication.Web.Controllers
             _context.SaveChanges();
             return RedirectToAction("Users");
         }
+
+        // GET: /Admin/DeleteUser/5
+        public IActionResult DeleteUser(int id)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.Id == id);
+            if (user == null) return NotFound();
+            return View(user);
+        }
+
+        // POST: /Admin/DeleteUser/5
+        [HttpPost, ActionName("DeleteUser")]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteUserConfirmed(int id)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.Id == id);
+            if (user == null) return NotFound();
+            _context.Users.Remove(user);
+            _context.SaveChanges();
+            return RedirectToAction("Users");
+        }
+
+        // GET: /Admin/CreateUser
+        public IActionResult CreateUser()
+        {
+            return View();
+        }
+
+        // POST: /Admin/CreateUser
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult CreateUser(User newUser)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(newUser);
+            }
+            // Kullanıcı adı veya email benzersiz olmalı
+            if (_context.Users.Any(u => u.UserName == newUser.UserName))
+            {
+                ModelState.AddModelError("UserName", "Bu kullanıcı adı zaten mevcut.");
+                return View(newUser);
+            }
+            if (_context.Users.Any(u => u.Email == newUser.Email))
+            {
+                ModelState.AddModelError("Email", "Bu email zaten mevcut.");
+                return View(newUser);
+            }
+            // Telefon numarası doğrulama
+            if (!string.IsNullOrEmpty(newUser.PhoneNumber))
+            {
+                var phoneUtil = PhoneNumberUtil.GetInstance();
+                try
+                {
+                    var phoneNumber = phoneUtil.Parse(newUser.PhoneNumber, "TR");
+                    if (!phoneUtil.IsValidNumberForRegion(phoneNumber, "TR"))
+                    {
+                        ModelState.AddModelError("PhoneNumber", "Geçerli bir telefon numarası giriniz.");
+                        return View(newUser);
+                    }
+                }
+                catch (NumberParseException)
+                {
+                    ModelState.AddModelError("PhoneNumber", "Geçerli bir telefon numarası giriniz.");
+                    return View(newUser);
+                }
+            }
+            _context.Users.Add(newUser);
+            _context.SaveChanges();
+            return RedirectToAction("Users");
+        }
     }
 } 
