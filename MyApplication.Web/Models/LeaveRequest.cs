@@ -13,5 +13,6 @@ namespace MyApplication.Web.Models
         public DateTime ReturnDate { get; set; }
         public string? Description { get; set; }
         public bool IsApproved { get; set; } = false;
+        public virtual User User { get; set; }
     }
 } 

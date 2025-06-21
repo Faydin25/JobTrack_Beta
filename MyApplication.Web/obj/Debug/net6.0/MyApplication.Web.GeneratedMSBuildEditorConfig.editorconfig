@@ -55,10 +55,6 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9UYXNrTGlzdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/binam/jobtrack/MyApplication.Web/Views/Leave/All.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTGVhdmUvQWxsLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
 [/home/binam/jobtrack/MyApplication.Web/Views/Leave/MyLeaves.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTGVhdmUvTXlMZWF2ZXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 

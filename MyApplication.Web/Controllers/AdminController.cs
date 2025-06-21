@@ -3,6 +3,7 @@ using MyApplication.Web.Data;
 using MyApplication.Web.Models;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.EntityFrameworkCore;
 
 namespace MyApplication.Web.Controllers
 {
@@ -63,6 +64,28 @@ namespace MyApplication.Web.Controllers
             user.Password = updatedUser.Password;
             _context.SaveChanges();
             return RedirectToAction("Users");
+        }
+
+        // GET: /Admin/LeaveRequests
+        public IActionResult LeaveRequests()
+        {
+            var leaveRequests = _context.LeaveRequests.Include(lr => lr.User).ToList();
+            return View(leaveRequests);
+        }
+
+        // POST: /Admin/ApproveLeaveRequest
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ApproveLeaveRequest(int id, bool isApproved)
+        {
+            var leaveRequest = _context.LeaveRequests.Find(id);
+            if (leaveRequest == null)
+            {
+                return NotFound();
+            }
+            leaveRequest.IsApproved = isApproved;
+            _context.SaveChanges();
+            return RedirectToAction("LeaveRequests");
         }
 
         // GET: /Admin/CreateUser

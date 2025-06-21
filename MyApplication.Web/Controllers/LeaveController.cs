@@ -1,13 +1,19 @@
 using Microsoft.AspNetCore.Mvc;
+using MyApplication.Web.Data;
 using MyApplication.Web.Models;
-using MyApplication.Web.Services;
 using System.Linq;
+using System.Security.Claims;
 
 namespace MyApplication.Web.Controllers
 {
     public class LeaveController : Controller
     {
-        private static LeaveRequestService _service = new LeaveRequestService();
+        private readonly AppDbContext _context;
+
+        public LeaveController(AppDbContext context)
+        {
+            _context = context;
+        }
 
         // Kullanıcı izin başvuru formu
         public IActionResult Request()
@@ -18,23 +24,36 @@ namespace MyApplication.Web.Controllers
         [HttpPost]
         public IActionResult Request(LeaveRequest model)
         {
-            // Örnek: Giriş yapan kullanıcıyı 1 olarak varsayalım
-            model.UserId = 1;
-            _service.Add(model);
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+
+            model.UserId = int.Parse(userId);
+            _context.LeaveRequests.Add(model);
+            _context.SaveChanges();
             return RedirectToAction("MyLeaves");
         }
 
         // Kullanıcı kendi izinlerini görsün
         public IActionResult MyLeaves()
         {
-            var leaves = _service.GetByUser(1); // Örnek: Giriş yapan kullanıcı 1
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+
+            var userIdInt = int.Parse(userId);
+            var leaves = _context.LeaveRequests.Where(l => l.UserId == userIdInt).ToList();
             return View(leaves);
         }
 
         // Yönetici tüm izinleri görsün
         public IActionResult All()
         {
-            var leaves = _service.GetAll();
+            var leaves = _context.LeaveRequests.ToList();
             return View(leaves);
         }
 
@@ -42,7 +61,12 @@ namespace MyApplication.Web.Controllers
         [HttpPost]
         public IActionResult Approve(int id, bool approve)
         {
-            _service.Approve(id, approve);
+            var req = _context.LeaveRequests.Find(id);
+            if (req != null)
+            {
+                req.IsApproved = approve;
+                _context.SaveChanges();
+            }
             return RedirectToAction("All");
         }
     }

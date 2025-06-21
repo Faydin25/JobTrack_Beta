@@ -20,6 +20,12 @@ namespace MyApplication.Web.Data
                 .HasForeignKey(t => t.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.LeaveRequests)
+                .WithOne(lr => lr.User)
+                .HasForeignKey(lr => lr.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             base.OnModelCreating(modelBuilder);
         }
     }
