@@ -64,5 +64,27 @@ namespace MyApplication.Web.Controllers
             _context.SaveChanges();
             return RedirectToAction("Users");
         }
+
+        // GET: /Admin/CreateUser
+        public IActionResult CreateUser()
+        {
+            return View();
+        }
+
+        // POST: /Admin/CreateUser
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult CreateUser(User newUser)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(newUser);
+            }
+
+            _context.Users.Add(newUser);
+            _context.SaveChanges();
+
+            return RedirectToAction("Users");
+        }
     }
 } 
