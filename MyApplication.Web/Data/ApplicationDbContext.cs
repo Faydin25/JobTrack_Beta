@@ -9,6 +9,7 @@ namespace MyApplication.Web.Data
 
         public DbSet<User> Users { get; set; }
         public DbSet<MyApplication.Web.Models.Task> Tasks { get; set; }
+        public DbSet<MyApplication.Web.Models.LeaveRequest> LeaveRequests { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

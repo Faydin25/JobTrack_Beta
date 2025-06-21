@@ -1,0 +1,34 @@
+@model MyApplication.Web.Models.LeaveRequest
+@{
+    ViewData["Title"] = "Yıllık İzin Başvurusu";
+}
+<div class="container mt-5">
+    <h2 class="mb-4">Yıllık İzin Başvurusu</h2>
+    <form asp-action="Request" method="post">
+        <div class="mb-3">
+            <label asp-for="StartDate" class="form-label">İzin Başlangıç Tarihi</label>
+            <input asp-for="StartDate" type="date" class="form-control" />
+            <span asp-validation-for="StartDate" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="EndDate" class="form-label">İzin Bitiş Tarihi</label>
+            <input asp-for="EndDate" type="date" class="form-control" />
+            <span asp-validation-for="EndDate" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="ReturnDate" class="form-label">Göreve Başlayacağı Tarih</label>
+            <input asp-for="ReturnDate" type="date" class="form-control" />
+            <span asp-validation-for="ReturnDate" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Description" class="form-label">Açıklama</label>
+            <textarea asp-for="Description" class="form-control"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-success">Başvur</button>
+        <a href="@Url.Action("MyLeaves", "Leave")" class="btn btn-secondary ms-2">İzinlerim</a>
+    </form>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 

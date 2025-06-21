@@ -3,10 +3,7 @@
     ViewData["Title"] = "Kullanıcı Listesi";
 }
 <div class="container mt-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="mb-0">Kullanıcı Listesi</h2>
-        <a class="btn btn-success" href="@Url.Action("CreateUser", "Admin")">Yeni Kullanıcı Ekle</a>
-    </div>
+    <h2 class="mb-4">Kullanıcı Listesi</h2>
     <table class="table table-striped table-hover">
         <thead class="table-dark">
             <tr>
@@ -38,7 +35,6 @@
                 </td>
                 <td>
                     <a class="btn btn-primary btn-sm" href="@Url.Action("EditUser", "Admin", new { id = user.Id })">Düzenle</a>
-                    <a class="btn btn-danger btn-sm ms-2" href="@Url.Action("DeleteUser", "Admin", new { id = user.Id })" onclick="return confirm('Kullanıcıyı silmek istediğinize emin misiniz?');">Sil</a>
                 </td>
             </tr>
         }

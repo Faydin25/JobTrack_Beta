@@ -488,3 +488,4 @@ C:/Users/MaxWell/Desktop/xxx/MyApplication.Web/obj/Debug/net6.0/ref/MyApplicatio
 /home/binam/jobtrack/MyApplication.Web/obj/Debug/net6.0/MyApplication.Web.pdb
 /home/binam/jobtrack/MyApplication.Web/obj/Debug/net6.0/MyApplication.Web.genruntimeconfig.cache
 /home/binam/jobtrack/MyApplication.Web/obj/Debug/net6.0/ref/MyApplication.Web.dll
+/home/binam/jobtrack/MyApplication.Web/bin/Debug/net6.0/PhoneNumbers.dll
