@@ -88,6 +88,23 @@ namespace MyApplication.Web.Controllers
             return RedirectToAction("LeaveRequests");
         }
 
+        // POST: /Admin/UpdateLeaveStatus
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult UpdateLeaveStatus(int id, LeaveRequestStatus status)
+        {
+            var leaveRequest = _context.LeaveRequests.Find(id);
+            if (leaveRequest == null)
+            {
+                return NotFound();
+            }
+            leaveRequest.Status = status;
+            leaveRequest.IsApproved = status == LeaveRequestStatus.Approved;
+            _context.SaveChanges();
+            return RedirectToAction("LeaveRequests");
+        }
+
+
         // GET: /Admin/CreateUser
         public IActionResult CreateUser()
         {

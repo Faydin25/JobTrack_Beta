@@ -1,4 +1,6 @@
 @model IEnumerable<MyApplication.Web.Models.LeaveRequest>
+@using MyApplication.Web.Models
+
 @{
     ViewData["Title"] = "İzin Talepleri";
 }
@@ -26,9 +28,13 @@
                     <td>@item.EndDate.ToString("yyyy-MM-dd")</td>
                     <td>@item.Description</td>
                     <td>
-                        @if (item.IsApproved)
+                        @if (item.Status == LeaveRequestStatus.Approved)
                         {
                             <span class="badge bg-success">Onaylandı</span>
+                        }
+                        else if (item.Status == LeaveRequestStatus.Rejected)
+                        {
+                            <span class="badge bg-danger">Reddedildi</span>
                         }
                         else
                         {
@@ -36,19 +42,19 @@
                         }
                     </td>
                     <td>
-                        @if (!item.IsApproved)
+                        @if (item.Status == LeaveRequestStatus.Pending)
                         {
-                            <form asp-action="ApproveLeaveRequest" method="post" style="display:inline;">
+                            <form asp-action="UpdateLeaveStatus" method="post" style="display:inline;">
                                 <input type="hidden" name="id" value="@item.Id" />
-                                <input type="hidden" name="isApproved" value="true" />
+                                <input type="hidden" name="status" value="@LeaveRequestStatus.Approved" />
                                 <button type="submit" class="btn btn-success btn-sm">Onayla</button>
                             </form>
+                            <form asp-action="UpdateLeaveStatus" method="post" style="display:inline;">
+                                <input type="hidden" name="id" value="@item.Id" />
+                                <input type="hidden" name="status" value="@LeaveRequestStatus.Rejected" />
+                                <button type="submit" class="btn btn-danger btn-sm">Reddet</button>
+                            </form>
                         }
-                        <form asp-action="ApproveLeaveRequest" method="post" style="display:inline;">
-                            <input type="hidden" name="id" value="@item.Id" />
-                            <input type="hidden" name="isApproved" value="false" />
-                            <button type="submit" class="btn btn-danger btn-sm">Reddet</button>
-                        </form>
                     </td>
                 </tr>
             }

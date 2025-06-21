@@ -1,4 +1,6 @@
 @model IEnumerable<MyApplication.Web.Models.LeaveRequest>
+@using MyApplication.Web.Models
+
 @{
     ViewData["Title"] = "İzinlerim";
 }
@@ -24,9 +26,13 @@
                 <td>@item.ReturnDate.ToString("yyyy-MM-dd")</td>
                 <td>@item.Description</td>
                 <td>
-                    @if (item.IsApproved)
+                    @if (item.Status == LeaveRequestStatus.Approved)
                     {
                         <span class="badge bg-success">Onaylandı</span>
+                    }
+                    else if (item.Status == LeaveRequestStatus.Rejected)
+                    {
+                        <span class="badge bg-danger">Reddedildi</span>
                     }
                     else
                     {

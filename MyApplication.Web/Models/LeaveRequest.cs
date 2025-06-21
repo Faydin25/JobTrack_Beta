@@ -3,6 +3,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MyApplication.Web.Models
 {
+    public enum LeaveRequestStatus
+    {
+        Pending,
+        Approved,
+        Rejected
+    }
+
     public class LeaveRequest
     {
         [Key]
@@ -13,6 +20,7 @@ namespace MyApplication.Web.Models
         public DateTime ReturnDate { get; set; }
         public string? Description { get; set; }
         public bool IsApproved { get; set; } = false;
+        public LeaveRequestStatus Status { get; set; } = LeaveRequestStatus.Pending;
         public virtual User User { get; set; }
     }
 } 
