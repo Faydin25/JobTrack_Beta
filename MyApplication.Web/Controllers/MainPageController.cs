@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using MyApplication.Web.Data;
 using MyApplication.Web.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
+using MyApplication.Web.Data;
+using System;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace MyApplication.Web.Controllers
 {
@@ -39,6 +42,8 @@ namespace MyApplication.Web.Controllers
                 var usersWithPhoto = users.Count(u => !string.IsNullOrEmpty(u.PhotoPath));
                 var usersWithoutPhoto = users.Count(u => string.IsNullOrEmpty(u.PhotoPath));
 
+                var news = _context.News.OrderByDescending(n => n.PublishedDate).Take(10).ToList();
+
                 ViewData["UsersWithPhoto"] = usersWithPhoto;
                 ViewData["UsersWithoutPhoto"] = usersWithoutPhoto;
                 ViewData["AgeGroups"] = ageGroups;
@@ -46,6 +51,7 @@ namespace MyApplication.Web.Controllers
                 ViewData["TasksAndCount"] = tasksAndCount;
                 ViewData["UserLogs"] = currentUser.LogTimesJson ?? "[]";
                 ViewData["OverdueTasksCount"] = overdueTasksCount;
+                ViewData["News"] = news;
 
                 return View();
             }

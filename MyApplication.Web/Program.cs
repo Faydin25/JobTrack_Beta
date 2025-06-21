@@ -4,7 +4,6 @@ using MyApplication.Web.Data;
 using MyApplication.Web.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 

@@ -21,6 +21,6 @@ namespace MyApplication.Web.Models
         public string? Description { get; set; }
         public bool IsApproved { get; set; } = false;
         public LeaveRequestStatus Status { get; set; } = LeaveRequestStatus.Pending;
-        public virtual User User { get; set; }
+        public virtual User? User { get; set; }
     }
 } 

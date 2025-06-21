@@ -1,0 +1,28 @@
+@model MyApplication.Web.Models.News
+
+@{
+    ViewData["Title"] = "Haberi Sil";
+}
+
+<div class="container mt-5">
+    <h2>Haberi Sil</h2>
+    <h3>Bu haberi silmek istediğinizden emin misiniz?</h3>
+    <div>
+        <h4>@Html.DisplayFor(model => model.Title)</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                Yayınlanma Tarihi
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.PublishedDate)
+            </dd>
+        </dl>
+        
+        <form asp-action="DeleteNews">
+            <input type="hidden" asp-for="Id" />
+            <input type="submit" value="Sil" class="btn btn-danger" /> |
+            <a asp-action="NewsList" class="btn btn-secondary">Geri Dön</a>
+        </form>
+    </div>
+</div> 

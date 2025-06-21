@@ -17,7 +17,7 @@ namespace MyApplication.Web.Models
 
         public TaskStatus Status { get; set; }  // Enum kullanarak task durumunu yönet
 
-        public virtual User User { get; set; }  // Navigation property
+        public virtual User? User { get; set; }  // Navigation property
 
         [DataType(DataType.Date)]
         public DateTime CreatedDate { get; set; }  // Oluşturulma tarihi
@@ -25,7 +25,7 @@ namespace MyApplication.Web.Models
         [DataType(DataType.Date)]
         public DateTime Deadline { get; set; }  // Son teslim tarihi
 
-        public string? AttachmentPath { get; set; }  // Ek dosya yolu
+        public string? AttachmentPath { get; set; }
     }
 
     public enum TaskStatus

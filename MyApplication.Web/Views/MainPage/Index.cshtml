@@ -1,4 +1,7 @@
-﻿@{
+﻿@using Newtonsoft.Json
+@using MyApplication.Web.Models
+
+@{
     var ageGroups = ViewData["AgeGroups"] as Dictionary<int, int>;
     var userCount = ViewData["UserCount"] as int?;
     var tasksAndCount = ViewData["TasksAndCount"] as Dictionary<string, int>;
@@ -6,6 +9,7 @@
     var usersWithPhoto = ViewData["UsersWithPhoto"] as int?;
     var usersWithoutPhoto = ViewData["UsersWithoutPhoto"] as int?;
     var overdueTasksCount = ViewData["OverdueTasksCount"] as int?;
+    var news = ViewData["News"] as List<News>;
 }
 
 <!DOCTYPE html>
@@ -19,79 +23,107 @@
 </head>
 <body>
     <div class="container-fluid py-4">
-        <div class="row g-4">
-
-            <!-- Sol: Kullanıcı Logları -->
-            <div class="col-md-6">
-                <div class="card h-100">
-                    <div class="card-header">
-                        <h5 class="mb-0">Kullanıcı Logları</h5>
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="row g-4">
+                    <!-- Sol: Kullanıcı Logları -->
+                    <div class="col-md-6">
+                        <div class="card h-100">
+                            <div class="card-header">
+                                <h5 class="mb-0">Kullanıcı Logları</h5>
+                            </div>
+                            <div class="card-body p-0" style="max-height: 400px; overflow-y: auto;">
+                                <table class="table table-striped table-sm mb-0">
+                                    <thead class="table-light">
+                                        <tr><th>Log Zamanı</th></tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var log in userLogs)
+                                        {
+                                            <tr><td>@log.ToString("dd.MM.yyyy HH:mm")</td></tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-body p-0" style="max-height: 400px; overflow-y: auto;">
-                        <table class="table table-striped table-sm mb-0">
-                            <thead class="table-light">
-                                <tr><th>Log Zamanı</th></tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var log in userLogs)
+        
+                    <!-- Sağ: Görev Grafiği -->
+                    <div class="col-md-6">
+                        <div class="card h-100">
+                            <div class="card-header">
+                                <h5 class="mb-0">Task Durumları</h5>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="tasksStatusChart" style="width: 100%; height: 300px;"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-md-4">
+                        <div class="card text-bg-primary mb-3">
+                            <div class="card-header">Toplam Kullanıcı</div>
+                            <div class="card-body">
+                                <h5 class="card-title">@userCount</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card text-bg-success mb-3">
+                            <div class="card-header">Fotoğraflı Kullanıcı</div>
+                            <div class="card-body">
+                                <h5 class="card-title">@usersWithPhoto</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card text-bg-danger mb-3">
+                            <div class="card-header">Fotosuz Kullanıcı</div>
+                            <div class="card-body">
+                                <h5 class="card-title">@usersWithoutPhoto</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mt-3">
+                        <div class="card text-bg-warning mb-3">
+                            <div class="card-header">Gecikmiş Görevler</div>
+                            <div class="card-body">
+                                <h5 class="card-title">@(overdueTasksCount ?? 0)</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <h4>Haberler</h4>
+                <hr />
+                <div style="max-height: 80vh; overflow-y: auto;">
+                    @if (news != null && news.Any())
+                    {
+                        foreach (var item in news)
+                        {
+                            <div class="card mb-3">
+                                @if (!string.IsNullOrEmpty(item.ImagePath))
                                 {
-                                    <tr><td>@log.ToString("dd.MM.yyyy HH:mm")</td></tr>
+                                    <img src="@item.ImagePath" class="card-img-top" alt="@item.Title">
                                 }
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Sağ: Görev Grafiği -->
-            <div class="col-md-6">
-                <div class="card h-100">
-                    <div class="card-header">
-                        <h5 class="mb-0">Task Durumları</h5>
-                    </div>
-                    <div class="card-body">
-                        <canvas id="tasksStatusChart" style="width: 100%; height: 300px;"></canvas>
-                    </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">@item.Title</h5>
+                                    <p class="card-text">@item.Content</p>
+                                    <p class="card-text"><small class="text-muted">@item.PublishedDate.ToString("dd MMMM yyyy")</small></p>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p>Gösterilecek haber bulunamadı.</p>
+                    }
                 </div>
             </div>
         </div>
 
-        <!-- Kartlar: Kullanıcı Sayıları -->
-        <div class="row mt-5">
-            <div class="col-md-4">
-                <div class="card text-bg-primary mb-3">
-                    <div class="card-header">Toplam Kullanıcı</div>
-                    <div class="card-body">
-                        <h5 class="card-title">@userCount</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card text-bg-success mb-3">
-                    <div class="card-header">Fotoğraflı Kullanıcı</div>
-                    <div class="card-body">
-                        <h5 class="card-title">@usersWithPhoto</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card text-bg-danger mb-3">
-                    <div class="card-header">Fotosuz Kullanıcı</div>
-                    <div class="card-body">
-                        <h5 class="card-title">@usersWithoutPhoto</h5>
-                    </div>
-                </div>
-            </div>
-            <!-- Yeni Kart: Gecikmiş Görevler -->
-            <div class="col-md-4 mt-3">
-                <div class="card text-bg-warning mb-3">
-                    <div class="card-header">Gecikmiş Görevler</div>
-                    <div class="card-body">
-                        <h5 class="card-title">@(overdueTasksCount ?? 0)</h5>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <!-- Chart.js -->

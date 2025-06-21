@@ -4,15 +4,22 @@ using MyApplication.Web.Models;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
+using System;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace MyApplication.Web.Controllers
 {
     public class AdminController : Controller
     {
         private readonly AppDbContext _context;
-        public AdminController(AppDbContext context)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public AdminController(AppDbContext context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public override void OnActionExecuting(ActionExecutingContext context)
@@ -65,6 +72,107 @@ namespace MyApplication.Web.Controllers
             _context.SaveChanges();
             return RedirectToAction("Users");
         }
+
+        // GET: /Admin/NewsList
+        public IActionResult NewsList()
+        {
+            var news = _context.News.OrderByDescending(n => n.PublishedDate).ToList();
+            return View(news);
+        }
+
+        // GET: /Admin/CreateNews
+        public IActionResult CreateNews()
+        {
+            return View();
+        }
+
+        // POST: /Admin/CreateNews
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateNews(News news, IFormFile imageFile)
+        {
+            if (ModelState.IsValid)
+            {
+                if (imageFile != null)
+                {
+                    var uniqueFileName = Guid.NewGuid().ToString() + "_" + imageFile.FileName;
+                    var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images/news");
+                    Directory.CreateDirectory(uploadsFolder);
+                    var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                    await imageFile.CopyToAsync(new FileStream(filePath, FileMode.Create));
+                    news.ImagePath = "/images/news/" + uniqueFileName;
+                }
+                news.PublishedDate = DateTime.Now;
+                _context.Add(news);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(NewsList));
+            }
+            return View(news);
+        }
+
+        // GET: /Admin/EditNews/5
+        public async Task<IActionResult> EditNews(int? id)
+        {
+            if (id == null) return NotFound();
+            var news = await _context.News.FindAsync(id);
+            if (news == null) return NotFound();
+            return View(news);
+        }
+
+        // POST: /Admin/EditNews/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditNews(int id, News news, IFormFile imageFile)
+        {
+            if (id != news.Id) return NotFound();
+
+            if (ModelState.IsValid)
+            {
+                if (imageFile != null)
+                {
+                    var uniqueFileName = Guid.NewGuid().ToString() + "_" + imageFile.FileName;
+                    var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images/news");
+                    Directory.CreateDirectory(uploadsFolder);
+                    var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                    await imageFile.CopyToAsync(new FileStream(filePath, FileMode.Create));
+                    news.ImagePath = "/images/news/" + uniqueFileName;
+                }
+
+                try
+                {
+                    _context.Update(news);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!_context.News.Any(e => e.Id == news.Id)) return NotFound();
+                    else throw;
+                }
+                return RedirectToAction(nameof(NewsList));
+            }
+            return View(news);
+        }
+
+        // GET: /Admin/DeleteNews/5
+        public async Task<IActionResult> DeleteNews(int? id)
+        {
+            if (id == null) return NotFound();
+            var news = await _context.News.FirstOrDefaultAsync(m => m.Id == id);
+            if (news == null) return NotFound();
+            return View(news);
+        }
+
+        // POST: /Admin/DeleteNews/5
+        [HttpPost, ActionName("DeleteNews")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteNewsConfirmed(int id)
+        {
+            var news = await _context.News.FindAsync(id);
+            _context.News.Remove(news);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(NewsList));
+        }
+
 
         // GET: /Admin/LeaveRequests
         public IActionResult LeaveRequests()
