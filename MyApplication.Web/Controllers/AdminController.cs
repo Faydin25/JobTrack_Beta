@@ -68,7 +68,10 @@ namespace MyApplication.Web.Controllers
             user.PhotoPath = updatedUser.PhotoPath;
             user.DateOfBirth = updatedUser.DateOfBirth;
             user.IsSuperUser = updatedUser.IsSuperUser;
-            user.Password = updatedUser.Password;
+            if (!string.IsNullOrEmpty(updatedUser.Password))
+            {
+                user.Password = updatedUser.Password;
+            }
             _context.SaveChanges();
             return RedirectToAction("Users");
         }
