@@ -1,170 +1,93 @@
-﻿@using Newtonsoft.Json
-@using MyApplication.Web.Models
-
+﻿@using MyApplication.Web.Models
 @{
-    var ageGroups = ViewData["AgeGroups"] as Dictionary<int, int>;
-    var userCount = ViewData["UserCount"] as int?;
-    var tasksAndCount = ViewData["TasksAndCount"] as Dictionary<string, int>;
-    var userLogs = Newtonsoft.Json.JsonConvert.DeserializeObject<List<DateTime>>(ViewData["UserLogs"] as string);
-    var usersWithPhoto = ViewData["UsersWithPhoto"] as int?;
-    var usersWithoutPhoto = ViewData["UsersWithoutPhoto"] as int?;
-    var overdueTasksCount = ViewData["OverdueTasksCount"] as int?;
     var news = ViewData["News"] as List<News>;
 }
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yönetim Paneli</title>
+    <title>Yönetim Paneli | KESKİNLER</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="~/css/mainpage.css" />
 </head>
 <body>
-    <div class="container-fluid py-4">
-        <div class="row">
-            <div class="col-lg-8">
-                <div class="row g-4">
-                    <!-- Sol: Kullanıcı Logları -->
-                    <div class="col-md-6">
-                        <div class="card h-100">
-                            <div class="card-header">
-                                <h5 class="mb-0">Kullanıcı Logları</h5>
-                            </div>
-                            <div class="card-body p-0" style="max-height: 400px; overflow-y: auto;">
-                                <table class="table table-striped table-sm mb-0">
-                                    <thead class="table-light">
-                                        <tr><th>Log Zamanı</th></tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var log in userLogs)
-                                        {
-                                            <tr><td>@log.ToString("dd.MM.yyyy HH:mm")</td></tr>
-                                        }
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-        
-                    <!-- Sağ: Görev Grafiği -->
-                    <div class="col-md-6">
-                        <div class="card h-100">
-                            <div class="card-header">
-                                <h5 class="mb-0">Task Durumları</h5>
-                            </div>
-                            <div class="card-body">
-                                <canvas id="tasksStatusChart" style="width: 100%; height: 300px;"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row mt-4">
-                    <div class="col-md-4">
-                        <div class="card text-bg-primary mb-3">
-                            <div class="card-header">Toplam Kullanıcı</div>
-                            <div class="card-body">
-                                <h5 class="card-title">@userCount</h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card text-bg-success mb-3">
-                            <div class="card-header">Fotoğraflı Kullanıcı</div>
-                            <div class="card-body">
-                                <h5 class="card-title">@usersWithPhoto</h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card text-bg-danger mb-3">
-                            <div class="card-header">Fotosuz Kullanıcı</div>
-                            <div class="card-body">
-                                <h5 class="card-title">@usersWithoutPhoto</h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mt-3">
-                        <div class="card text-bg-warning mb-3">
-                            <div class="card-header">Gecikmiş Görevler</div>
-                            <div class="card-body">
-                                <h5 class="card-title">@(overdueTasksCount ?? 0)</h5>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <h4>Haberler</h4>
-                <hr />
-                <div style="max-height: 80vh; overflow-y: auto;">
+    <div class="container py-5">
+        <div class="main-hero text-center mb-5">
+            <img src="/images/Klogo.png" alt="Keskinler Logo" class="logo mb-3" />
+            <h1 class="display-5 fw-bold">KESKİNLER Yönetim Paneli</h1>
+            <p class="lead mt-3">Hoş geldiniz! Buradan kullanıcı, görev ve haber yönetimini kolayca gerçekleştirebilirsiniz.<br>Modern ve güvenli altyapı ile işlerinizi hızlandırın.</p>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <h3 class="mb-4">Güncel Haberler</h3>
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
                     @if (news != null && news.Any())
                     {
+                        int modalIndex = 0;
                         foreach (var item in news)
                         {
-                            <div class="card mb-3">
-                                @if (!string.IsNullOrEmpty(item.ImagePath))
-                                {
-                                    <img src="@item.ImagePath" class="card-img-top" alt="@item.Title">
-                                }
-                                <div class="card-body">
-                                    <h5 class="card-title">@item.Title</h5>
-                                    <p class="card-text">@item.Content</p>
-                                    <p class="card-text"><small class="text-muted">@item.PublishedDate.ToString("dd MMMM yyyy")</small></p>
+                            var isLong = item.Content != null && item.Content.Length > 300;
+                            var shortContent = isLong ? item.Content.Substring(0, 300) + "..." : item.Content;
+                            <div class="col">
+                                <div class="card news-card h-100 shadow-sm">
+                                    @if (!string.IsNullOrEmpty(item.ImagePath))
+                                    {
+                                        <img src="@item.ImagePath" class="card-img-top" alt="@item.Title" style="background:#f4f4f4;" onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<div class=\'card-img-top d-flex align-items-center justify-content-center bg-light text-secondary\' style=\'height:180px;\'><span class=\'fw-bold\'>Görsel Yok</span></div>');" />
+                                    }
+                                    else
+                                    {
+                                        <div class="card-img-top d-flex align-items-center justify-content-center bg-light text-secondary" style="height:180px;">
+                                            <span class="fw-bold">Görsel Yok</span>
+                                        </div>
+                                    }
+                                    <div class="card-body d-flex flex-column">
+                                        <h5 class="card-title">@item.Title</h5>
+                                        <p class="card-text flex-grow-1">@Html.Raw(shortContent)</p>
+                                        @if (isLong)
+                                        {
+                                            <button type="button" class="btn btn-outline-primary btn-sm mt-2" data-bs-toggle="modal" data-bs-target="#newsModal@modalIndex">Devamını Oku</button>
+                                        }
+                                    </div>
+                                    <div class="card-footer text-end">
+                                        <small class="text-muted">@item.PublishedDate.ToString("dd MMMM yyyy")</small>
+                                    </div>
                                 </div>
                             </div>
+                            if (isLong)
+                            {
+                                <div class="modal fade" id="newsModal@modalIndex" tabindex="-1" aria-labelledby="newsModalLabel@modalIndex" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="newsModalLabel@modalIndex">@item.Title</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                @if (!string.IsNullOrEmpty(item.ImagePath))
+                                                {
+                                                    <img src="@item.ImagePath" alt="@item.Title" class="img-fluid rounded mb-3 w-100" style="max-height:350px;object-fit:contain;object-position:center;background:#f4f4f4;" onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<div class=\'w-100 d-flex align-items-center justify-content-center bg-light text-secondary mb-3\' style=\'height:200px;\'><span class=\'fw-bold\'>Görsel Yok</span></div>');" />
+                                                }
+                                                @Html.Raw(item.Content)
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                modalIndex++;
+                            }
                         }
                     }
                     else
                     {
-                        <p>Gösterilecek haber bulunamadı.</p>
+                        <div class="col-12"><p>Gösterilecek haber bulunamadı.</p></div>
                     }
                 </div>
             </div>
         </div>
-
     </div>
-
-    <!-- Chart.js -->
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            var tasksAndCount = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(tasksAndCount));
-            var taskLabels = Object.keys(tasksAndCount);
-            var taskCounts = Object.values(tasksAndCount);
-
-            var ctx = document.getElementById('tasksStatusChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: taskLabels,
-                    datasets: [{
-                        label: 'Task Durumları',
-                        data: taskCounts,
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 0.3)',
-                            'rgba(54, 162, 235, 0.3)',
-                            'rgba(255, 206, 86, 0.3)'
-                        ],
-                        borderColor: [
-                            'rgba(255, 99, 132, 1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)'
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
-        });
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

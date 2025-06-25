@@ -92,11 +92,12 @@ namespace MyApplication.Web.Controllers
         // POST: /Admin/CreateNews
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateNews(News news, IFormFile imageFile)
+        public async Task<IActionResult> CreateNews(News news)
         {
             if (ModelState.IsValid)
             {
-                if (imageFile != null)
+                var imageFile = Request.Form.Files["imageFile"];
+                if (imageFile != null && imageFile.Length > 0)
                 {
                     var uniqueFileName = Guid.NewGuid().ToString() + "_" + imageFile.FileName;
                     var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images/news");
