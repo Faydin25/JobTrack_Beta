@@ -22,6 +22,11 @@
             <span asp-validation-for="DateOfBirth" class="text-danger"></span>
         </div>
         <div class="mb-3">
+            <label asp-for="StartDate" class="form-label">İşe Başlama Tarihi</label>
+            <input asp-for="StartDate" type="date" class="form-control" />
+            <span asp-validation-for="StartDate" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
             <label asp-for="Password" class="form-label">Şifre</label>
             <input asp-for="Password" class="form-control" type="password" />
             <span asp-validation-for="Password" class="text-danger"></span>

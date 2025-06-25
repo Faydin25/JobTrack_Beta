@@ -96,23 +96,23 @@ namespace MyApplication.Web.Controllers
                     }
                     if (model.File != null)
                     {
+                        var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif", ".webp", ".bmp" };
+                        var allowedMimeTypes = new[] { "image/jpeg", "image/png", "image/gif", "image/webp", "image/bmp" };
+                        var fileExt = Path.GetExtension(model.File.FileName).ToLowerInvariant();
+                        if (!allowedExtensions.Contains(fileExt) || !allowedMimeTypes.Contains(model.File.ContentType))
+                        {
+                            ModelState.AddModelError("File", "Sadece resim dosyası yükleyebilirsiniz (jpg, jpeg, png, gif, webp, bmp).");
+                            return View("Index", model);
+                        }
                         string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
-
-                        //create folder if not exist
                         if (!Directory.Exists(path))
                             Directory.CreateDirectory(path);
-
-                        //get file extension
-                        FileInfo fileInfo = new FileInfo(model.File.FileName);
                         string fileName = model.File.FileName;
-
                         string fileNameWithPath = Path.Combine(path, fileName);
-
                         using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
                         {
                             model.File.CopyTo(stream);
                         }
-
                         user.PhotoPath = model.File.FileName;
                     }
                     await _context.SaveChangesAsync();

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "a1tqYkwTQdSfQIC52vy8u28RSOJA5z0Y3sbf0UK2nLY=",
+  "Hash": "X98xN0Yclsz4kKwRgKC/ujwA1Ndd5bADCcySGo1xdpI=",
   "Source": "MyApplication.Web",
   "BasePath": "_content/MyApplication.Web",
   "Mode": "Default",
@@ -1069,6 +1069,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "/home/binam/jobtrack/MyApplication.Web/obj/Debug/net6.0/scopedcss/projectbundle/MyApplication.Web.bundle.scp.css"
+    },
+    {
+      "Identity": "/home/binam/jobtrack/MyApplication.Web/wwwroot/css/mainpage.css",
+      "SourceId": "MyApplication.Web",
+      "SourceType": "Discovered",
+      "ContentRoot": "/home/binam/jobtrack/MyApplication.Web/wwwroot/",
+      "BasePath": "_content/MyApplication.Web",
+      "RelativePath": "css/mainpage.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/css/mainpage.css"
     },
     {
       "Identity": "/home/binam/jobtrack/MyApplication.Web/wwwroot/css/site.css",

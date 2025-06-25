@@ -97,10 +97,8 @@ namespace MyApplication.Web.Controllers
         {
             var model = new User();
             var userName = HttpContext.Session.GetString("UserName");
-            //var Id = HttpContext.Session.GetInt32("Id");
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == userName);
+            var user = await _context.Users.Include(u => u.Tasks).FirstOrDefaultAsync(u => u.UserName == userName);
             model = user ?? new User();
-
             return View(model);
         }
 

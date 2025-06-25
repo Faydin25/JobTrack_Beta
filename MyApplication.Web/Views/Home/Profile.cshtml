@@ -4,30 +4,87 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container mt-5">
+<div class="container py-5">
     <h2 class="text-center mb-4">Profil Bilgileri</h2>
-
     @if (Model != null)
     {
-        <div class="card mx-auto shadow p-4" style="max-width: 500px;">
-            @if (Model.PhotoPath != null)
-            {
-                <div class="text-center mb-3">
-                    <img src="/images/@Model.PhotoPath" class="rounded-circle" style="width: 120px; height: 120px; object-fit: cover;" />
-                </div>
-            }
-
+        <div class="card mx-auto shadow-lg p-4" style="max-width: 600px;">
+            <div class="text-center mb-3">
+                @if (!string.IsNullOrEmpty(Model.PhotoPath))
+                {
+                    <img src="/images/@Model.PhotoPath" class="rounded-circle border border-3" style="width: 120px; height: 120px; object-fit: cover;" alt="Profil Fotoğrafı" />
+                }
+                else
+                {
+                    <div class="rounded-circle bg-light d-flex align-items-center justify-content-center border border-3 mx-auto" style="width: 120px; height: 120px; font-size: 2.5rem; color: #888;">
+                        <span><i class="bi bi-person"></i></span>
+                    </div>
+                }
+                @if (Model.IsSuperUser)
+                {
+                    <span class="badge bg-success mt-2">Yönetici</span>
+                }
+            </div>
             <div class="card-body">
-                <p class="card-text"><strong>Kullanıcı Adı:</strong> @Model.UserName</p>
-                <p class="card-text"><strong>Email:</strong> @Model.Email</p>
+                <div class="row mb-2">
+                    <div class="col-6"><strong>Kullanıcı Adı:</strong></div>
+                    <div class="col-6">@Model.UserName</div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-6"><strong>Email:</strong></div>
+                    <div class="col-6">@Model.Email</div>
+                </div>
                 @if (Model.DateOfBirth != null)
                 {
-                    <p class="card-text"><strong>Doğum Tarihi:</strong> @Model.DateOfBirth?.ToString("dd.MM.yyyy")</p>
+                    <div class="row mb-2">
+                        <div class="col-6"><strong>Doğum Tarihi:</strong></div>
+                        <div class="col-6">@Model.DateOfBirth?.ToString("dd.MM.yyyy")</div>
+                    </div>
                 }
                 @if (!string.IsNullOrEmpty(Model.PhoneNumber))
                 {
-                    <p class="card-text"><strong>Telefon Numarası:</strong> @Model.PhoneNumber</p>
+                    <div class="row mb-2">
+                        <div class="col-6"><strong>Telefon Numarası:</strong></div>
+                        <div class="col-6">@Model.PhoneNumber</div>
+                    </div>
                 }
+                @if (Model.StartDate != null)
+                {
+                    <div class="row mb-2">
+                        <div class="col-6"><strong>İşe Başlama Tarihi:</strong></div>
+                        <div class="col-6">@Model.StartDate?.ToString("dd.MM.yyyy")</div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-6"><strong>Toplam Çalışılan Gün:</strong></div>
+                        <div class="col-6">@Model.TotalDaysWorked</div>
+                    </div>
+                }
+                <div class="row mb-2">
+                    <div class="col-6"><strong>Kullanılan İzin Gün Sayısı:</strong></div>
+                    <div class="col-6">@Model.LeaveDaysUsed</div>
+                </div>
+                @if (Model.LeaveDates != null && Model.LeaveDates.Count > 0)
+                {
+                    <div class="row mb-2">
+                        <div class="col-6"><strong>İzin Tarihleri:</strong></div>
+                        <div class="col-6">
+                            <ul class="list-unstyled mb-0">
+                                @foreach (var date in Model.LeaveDates)
+                                {
+                                    <li><span class="badge bg-info text-dark">@date.ToString("dd.MM.yyyy")</span></li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                }
+                <div class="row mb-2">
+                    <div class="col-6"><strong>Tamamlanan Task Sayısı:</strong></div>
+                    <div class="col-6">@Model.CompletedTaskCount</div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-6"><strong>Başarısız (Süresi Geçen) Task Sayısı:</strong></div>
+                    <div class="col-6">@Model.FailedTaskCount</div>
+                </div>
             </div>
         </div>
     }
@@ -37,7 +94,6 @@
             Kullanıcı bilgileri yüklenemedi.
         </div>
     }
-
     @if (TempData["Error"] != null)
     {
         <div class="alert alert-danger text-center mt-3">
@@ -45,3 +101,4 @@
         </div>
     }
 </div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />

@@ -67,6 +67,7 @@ namespace MyApplication.Web.Controllers
             user.Email = updatedUser.Email;
             user.PhotoPath = updatedUser.PhotoPath;
             user.DateOfBirth = updatedUser.DateOfBirth;
+            user.StartDate = updatedUser.StartDate;
             user.IsSuperUser = updatedUser.IsSuperUser;
             if (!string.IsNullOrEmpty(updatedUser.Password))
             {

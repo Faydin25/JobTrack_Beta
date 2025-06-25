@@ -15,12 +15,24 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = /home/binam/jobtrack/MyApplication.Web
 build_property._RazorSourceGeneratorDebug = 
 
+[/home/binam/jobtrack/MyApplication.Web/Views/Admin/CreateNews.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vQ3JlYXRlTmV3cy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [/home/binam/jobtrack/MyApplication.Web/Views/Admin/CreateUser.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vQ3JlYXRlVXNlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[/home/binam/jobtrack/MyApplication.Web/Views/Admin/DeleteNews.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vRGVsZXRlTmV3cy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [/home/binam/jobtrack/MyApplication.Web/Views/Admin/DeleteUser.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vRGVsZXRlVXNlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/binam/jobtrack/MyApplication.Web/Views/Admin/EditNews.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vRWRpdE5ld3MuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [/home/binam/jobtrack/MyApplication.Web/Views/Admin/EditUser.cshtml]
@@ -29,6 +41,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [/home/binam/jobtrack/MyApplication.Web/Views/Admin/LeaveRequests.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vTGVhdmVSZXF1ZXN0cy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/binam/jobtrack/MyApplication.Web/Views/Admin/NewsList.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vTmV3c0xpc3QuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [/home/binam/jobtrack/MyApplication.Web/Views/Admin/Users.cshtml]
