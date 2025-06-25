@@ -11,6 +11,7 @@ using MyApplication.Web.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using TaskStatusEnum = MyApplication.Web.Models.TaskStatus;
+using System.IO;
 
 namespace MyApplication.Web.Controllers
 {
@@ -223,6 +224,16 @@ namespace MyApplication.Web.Controllers
             var task = _context.Tasks.FirstOrDefault(t => t.TaskId == taskId && t.UserId == userId);
             if (task != null)
             {
+                // Eğer task tamamlanıyorsa, ek dosyayı sil
+                if (task.Status != TaskStatusEnum.Done && newStatus == TaskStatusEnum.Done && !string.IsNullOrEmpty(task.AttachmentPath))
+                {
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", task.AttachmentPath.TrimStart('/'));
+                    if (System.IO.File.Exists(filePath))
+                    {
+                        System.IO.File.Delete(filePath);
+                    }
+                    task.AttachmentPath = null;
+                }
                 task.Status = newStatus;
                 _context.SaveChanges();
             }

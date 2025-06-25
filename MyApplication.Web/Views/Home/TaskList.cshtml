@@ -37,6 +37,7 @@
             <th>Durum</th>
             <th>Kullanıcı</th>
             <th>Oluşturulma Tarihi</th>
+            <th>Son Teslim Tarihi</th>
             <th>Ek Dosya</th>
             <th>İşlem</th>
         </tr>
@@ -45,13 +46,20 @@
         @foreach (var task in Model.Tasks)
         {
             var isOverdue = task.Deadline < DateTime.Now && task.Status != TaskStatus.Done;
-            var rowClass = GetStatusClass(task.Status) + (isOverdue ? " overdue-task" : "");
+            var rowClass = isOverdue ? "overdue-task" : GetStatusClass(task.Status);
             <tr class="@rowClass">
-                <td>@task.Title</td>
+                <td>
+                    @task.Title
+                    @if (isOverdue)
+                    {
+                        <span title="Süresi Geçti" style="color:#ff2222;font-size:1.2em;margin-left:5px;">&#9888;</span>
+                    }
+                </td>
                 <td>@task.Description</td>
                 <td>@(task.Status == TaskStatus.ToDo ? "Yapılacak" : task.Status == TaskStatus.InProgress ? "Yapılıyor" : task.Status == TaskStatus.Done ? "Tamamlandı" : task.Status.ToString())</td>
                 <td>@(task.User?.UserName ?? "Kullanıcı Yok")</td>
                 <td>@task.CreatedDate.ToString("yyyy-MM-dd")</td>
+                <td>@task.Deadline.ToString("yyyy-MM-dd")</td>
                 <td>
                     @if (!string.IsNullOrEmpty(task.AttachmentPath))
                     {
@@ -90,8 +98,14 @@
 </div>
 
 <style>
-    .overdue-task {
-        background-color: #ffcccc !important;
+    .overdue-task, .overdue-task td, .overdue-task th {
+        background-color: #e53935 !important;
+        color: #fff !important;
+        border-color: #b71c1c !important;
+        box-shadow: 0 0 4px #b71c1c33;
+    }
+    .table-warning, .table-primary, .table-success {
+        background-color: inherit !important;
     }
 </style>
 
